@@ -1,4 +1,5 @@
 
+@inherits Statiq.Razor.StatiqRazorPage<IEnumerable<IDocument>>
 @model IEnumerable<IDocument>
 
 @using Humanizer;
@@ -6,7 +7,7 @@
 @{
     var extensions =
         Model
-            .OrderBy(x => x.String("Name"))
+            .OrderBy(x => x.GetString("Name"))
             .ToList();
 }
 
@@ -18,19 +19,20 @@
         </p>
     }
 
-    @foreach(IDocument extension in extensions)
+    @foreach (IDocument extension in extensions)
     {
-        string type = extension.String("Type");
-        string name = extension.String("Name");
-        string description = extension.String("Description");
-        string author = extension.String("Author");
-        string version = extension.String("AnalyzedPackageVersion");
-        string publishDate = extension.String("AnalyzedPackagePublishDate");
-        string categories = (String.Join(", ", extension.List<string>("Categories")));
+        string type = extension.GetString("Type");
+        string name = extension.GetString("Name");
+        string description = extension.GetString("Description");
+        string author = extension.GetString("Author");
+        string version = extension.GetString("AnalyzedPackageVersion");
+        string publishDate = extension.GetString("AnalyzedPackagePublishDate");
+        string categories = (String.Join(", ", extension.GetList<string>("Categories")));
 
         <article class="extension row" data-type="@type" data-name="@name" data-analyzedpackagepublishdate="@publishDate" data-categories="@categories">
             <div class="col-sm-1 hidden-xs hidden-sm col-package-icon">
-                @switch (type) {
+                @switch (type)
+                {
                     case "Addin":
                         <i class="fa fa-puzzle-piece fa-4x"></i>
                         break;

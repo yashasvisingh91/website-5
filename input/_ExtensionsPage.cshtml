@@ -1,3 +1,4 @@
+@inherits Statiq.Razor.StatiqRazorPage<IEnumerable<IDocument>>
 @model IEnumerable<IDocument>
 
 @{
@@ -6,16 +7,16 @@
     var extensions =
         Model
             .Where(x =>
-                x.String("Type") != null &&
-                extensionType.Any(y => y.Equals(x.String("Type"), StringComparison.OrdinalIgnoreCase)))
-            .OrderBy(x => x.String("Name"))
+                x.GetString("Type") != null &&
+                extensionType.Any(y => y.Equals(x.GetString("Type"), StringComparison.OrdinalIgnoreCase)))
+            .OrderBy(x => x.GetString("Name"))
             .ToList();
 }
 
 <div class="alert alert-info">
-    <i class="fa fa-bug" style="margin-right:20px;" aria-hidden="true"></i>If you want to file an issue for any extension listed here please contact the author of the extension.<br/>
-    <i class="fa fa-hand-pointer-o" style="margin-right:20px;" aria-hidden="true"></i>If you have requests for additional addins <a href="https://github.com/cake-build/cake/discussions?discussions_q=category%3A%22Extension+requests%22" target="_blank">start a discussion</a>.<br/>
-    <i class="fa fa-plus" style="margin-right:20px;" aria-hidden="true"></i>If you are an extension author and want to have your extension listed, follow the <a href="https://github.com/cake-build/website/blob/master/README.md#extensions" target="_blank">instructions</a>.<br/>
+    <i class="fa fa-bug" style="margin-right:20px;" aria-hidden="true"></i>If you want to file an issue for any extension listed here please contact the author of the extension.<br />
+    <i class="fa fa-hand-pointer-o" style="margin-right:20px;" aria-hidden="true"></i>If you have requests for additional addins <a href="https://github.com/cake-build/cake/discussions?discussions_q=category%3A%22Extension+requests%22" target="_blank">start a discussion</a>.<br />
+    <i class="fa fa-plus" style="margin-right:20px;" aria-hidden="true"></i>If you are an extension author and want to have your extension listed, follow the <a href="https://github.com/cake-build/website/blob/master/README.md#extensions" target="_blank">instructions</a>.<br />
 </div>
 
 <section id="extensions">
@@ -71,28 +72,28 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 <script>
     var options = {
-      valueNames: [
-        { data: ['type'] },
-        { data: ['name'] },
-        { data: ['analyzedpackagepublishdate'] },
-        { data: ['categories'] }
-      ]
+        valueNames: [
+            { data: ['type'] },
+            { data: ['name'] },
+            { data: ['analyzedpackagepublishdate'] },
+            { data: ['categories'] }
+        ]
     };
 
     var extensionList = new List('extensions', options);
 
-    extensionList.on('searchComplete', function() {
+    extensionList.on('searchComplete', function () {
         document.getElementById("result-count").innerHTML = extensionList.update().matchingItems.length + " extensions found";
     });
 
-    $('.filterType').on('change', function() {
+    $('.filterType').on('change', function () {
         var $type = this.value;
 
         if (!$type) {
             extensionList.filter();
         }
         else {
-            extensionList.filter(function(item) {
+            extensionList.filter(function (item) {
                 return (item.values().type == $type);
             });
         }

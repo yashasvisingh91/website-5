@@ -12,3 +12,6 @@ nuget.exe
 /.dotnet/
 /.packages/
 .DS_Store
+bin/
+obj/
+.vs/

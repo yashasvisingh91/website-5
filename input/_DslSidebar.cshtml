@@ -3,11 +3,11 @@
     //  - Item1: GroupKey
     //  - Item2: Group
     List<Tuple<string, IDocument>> categories = new List<Tuple<string, IDocument>>();
-    foreach(IDocument group in Documents.FromPipeline("DslAliases"))
+    foreach(IDocument group in Outputs.FromPipeline(nameof(DslAliasesPipeline)))
     {
         categories.Add(
             new Tuple<string, IDocument>(
-                group.String(Keys.GroupKey),
+                group.GetString(Keys.GroupKey),
                 group
         ));
     }
@@ -15,6 +15,6 @@
 
 @foreach(Tuple<string, IDocument> category in categories)
 {
-    string selectedClass = category.Item1 == Model.String(Keys.GroupKey) ? "selected" : null;
+    string selectedClass = category.Item1 == Model.GetString(Keys.GroupKey) ? "selected" : null;
     <li class="@selectedClass"><a href="@Context.GetLink(category.Item2)">@category.Item1</a></li>
 }

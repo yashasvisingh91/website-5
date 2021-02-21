@@ -33,9 +33,9 @@ else
 @{
     var keywords = new List<string> { "githubactions" };
     var extensions =
-        Documents["Extensions"]
+        Outputs.FromPipeline(nameof(ExtensionsPipeline))
             .Where(x =>
-                keywords.Any(y => x.String("Name").ToLowerInvariant().Contains(y)));
+                keywords.Any(y => x.GetString("Name").ToLowerInvariant().Contains(y)));
 }
 
 @Html.Partial("_ExtensionsList", extensions)

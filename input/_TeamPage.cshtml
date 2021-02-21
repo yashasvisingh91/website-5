@@ -1,3 +1,4 @@
+@inherits Statiq.Razor.StatiqRazorPage<IEnumerable<IDocument>>
 @model IEnumerable<IDocument>
 
 <p>
@@ -6,14 +7,14 @@
 </p>
 
 <div class="row">
-    @foreach(IDocument maintainer in Model.OrderBy(x => Guid.NewGuid()))
+    @foreach (IDocument maintainer in Model.OrderBy(x => Guid.NewGuid()))
     {
-        string name = maintainer.String("Name");
-        string gitHubUserName = maintainer.String("GitHubUserName");
-        string gitHubID = maintainer.String("GitHubID");
-        string website = maintainer.String("Website");
-        string twitter = maintainer.String("Twitter");
-        string linkedin = maintainer.String("LinkedIn");
+        string name = maintainer.GetString("Name");
+        string gitHubUserName = maintainer.GetString("GitHubUserName");
+        string gitHubID = maintainer.GetString("GitHubID");
+        string website = maintainer.GetString("Website");
+        string twitter = maintainer.GetString("Twitter");
+        string linkedin = maintainer.GetString("LinkedIn");
 
         <div class="col-sm-6 col-md-3">
             <div class="thumbnail">
@@ -57,6 +58,7 @@
     .team-member-caption {
         text-align: center;
     }
+
     .team-member-image {
         width: 169px;
         border-radius: 730px;
