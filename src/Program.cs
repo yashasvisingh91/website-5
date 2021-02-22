@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Statiq.App;
 using Statiq.Web;
+using Statiq.Common;
 
 namespace Cake.Website
 {
