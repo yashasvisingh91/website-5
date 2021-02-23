@@ -1,22 +1,22 @@
-@model IDocument
+@using Statiq.CodeAnalysis;
 
 @{
 	IDocument containingAssembly = Model.Get<IDocument>("ContainingAssembly");
     if(containingAssembly != null)
     {
-        IDocument extension = Documents["Extensions"]
+        IDocument extension = Outputs.FromPipeline(nameof(ExtensionsPipeline))
             .FirstOrDefault(x =>
                 (
-                    x.String("Type") == null ||
-                    x.String("Type").Equals("Addin", StringComparison.OrdinalIgnoreCase)
+                    x.GetString("Type") == null ||
+                    x.GetString("Type").Equals("Addin", StringComparison.OrdinalIgnoreCase)
                 ) &&
-                x.List<string>("Assemblies")
-                    ?.Any(y => y.Contains(containingAssembly.String(CodeAnalysisKeys.DisplayName))) == true);
+                x.GetList<string>("Assemblies")
+                    ?.Any(y => y.Contains(containingAssembly.GetString(CodeAnalysisKeys.DisplayName))) == true);
         <div class="alert alert-info" role="alert">
             <i class="fa fa-info-circle"></i> This content is part of a third party extension that is not supported by the Cake project.
-            @if(extension != null && !string.IsNullOrEmpty(extension.String("Name")))
+            @if(extension != null && !string.IsNullOrEmpty(extension.GetString("Name")))
             {
-                string extensionName = extension.String("Name");
+                string extensionName = extension.GetString("Name");
                 if(!string.IsNullOrEmpty(extensionName))
                 {
                     <text>

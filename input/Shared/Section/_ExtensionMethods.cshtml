@@ -1,10 +1,12 @@
 @using Microsoft.AspNetCore.Html;
 @using Microsoft.CodeAnalysis;
+@using Statiq.CodeAnalysis;
+
 @{
 	ITypeSymbol modelSymbol = Model.Get<ITypeSymbol>("Symbol");
-	IList<IDocument> methods = Model.List<IDocument>("ExtensionMethods")
-		?.Where(x => x.Bool("IsResult"))
-		.OrderBy(x => x["DisplayName"])
+	IList<IDocument> methods = Model.GetList<IDocument>("ExtensionMethods")
+		?.Where(x => x.GetBool("IsResult"))
+		.OrderBy(x => x.Get("DisplayName"))
 		.ToList();
 	if(methods.Count > 0)
 	{
@@ -36,19 +38,19 @@
 								<td>
 									<div>@Html.Raw(method["Summary"])</div>
 									@{
-										IDocument containingType = method.Document(CodeAnalysisKeys.ContainingType);
+										IDocument containingType = method.GetDocument(CodeAnalysisKeys.ContainingType);
 										<div><small><em>From @Context.GetTypeLink(containingType)</em></small></div>
 
                                         // Display a message if the extension is from an addin
                                         IDocument containingAssembly = containingType.Get<IDocument>("ContainingAssembly");
                                         if(containingAssembly != null)
                                         {
-                                            IDocument addin = Documents["Extensions"]
-                                                .FirstOrDefault(x => x.List<string>("Assemblies")
-                                                    ?.Any(y => y.Contains(containingAssembly.String(CodeAnalysisKeys.DisplayName))) == true);
+                                            IDocument addin = Outputs.FromPipeline(nameof(ExtensionsPipeline))
+                                                .FirstOrDefault(x => x.GetList<string>("Assemblies")
+                                                    ?.Any(y => y.Contains(containingAssembly.GetString(CodeAnalysisKeys.DisplayName))) == true);
 											if (addin != null)
 											{
-                                            	<div><small><em>Requires the @addin.String("Name") addin</em></small></div>
+                                            	<div><small><em>Requires the @addin.GetString("Name") addin</em></small></div>
 											}
                                         }
 									}

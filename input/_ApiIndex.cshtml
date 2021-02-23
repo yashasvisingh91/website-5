@@ -1,0 +1,18 @@
+@section Search {	
+	@Html.Partial("_ApiSearch")
+}
+
+@{
+	Layout = "/_Layout.cshtml";
+	@Html.Partial("Section\\_DocsTable", new DocsTable
+	{
+		Docs = Outputs.FromPipeline(nameof(ApiPipeline))
+			.Where(x => x.GetString("Kind") == "Namespace")
+			.OrderBy(x => x.GetString("DisplayName"))
+			.ToList(),
+		Title = "Namespaces",
+		Header = "Namespace",
+		HasSummary = true,
+		LinkTypeArguments = false	
+	});
+}  

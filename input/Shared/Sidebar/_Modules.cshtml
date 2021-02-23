@@ -1,0 +1,30 @@
+@using Statiq.CodeAnalysis;
+
+@{
+	IList<IGrouping<string, IDocument>> categoryGroups = 
+		Outputs.FromPipeline(nameof(ApiPipeline)) // TODO: Is this correct?
+			.GroupBy(x => {
+				IReadOnlyList<OtherComment> categoryComments = x.GetList<OtherComment>("CategoryComments");
+				return categoryComments == null ? string.Empty : categoryComments[0].Html;
+			})
+			.OrderBy(x => x.Key)
+			.ToList();
+	foreach(IGrouping<string, IDocument> categoryGroup in categoryGroups)
+	{
+		if(!string.IsNullOrWhiteSpace(categoryGroup.Key))
+		{
+			<li class="header">@categoryGroup.Key</li>
+		}
+					
+		foreach(IDocument childDoc in categoryGroup
+			.OrderBy(x => x.GetString("DisplayName")))
+		{
+			string selectedClass = Model.GetString("RelativeFilePath") == childDoc.GetString("RelativeFilePath") ? "selected" : null;
+			<li class="@selectedClass">
+				<a href="@Context.GetLink(childDoc)">
+					@(childDoc.GetString("DisplayName"))
+				</a>
+			</li>
+		} 
+	}	
+}

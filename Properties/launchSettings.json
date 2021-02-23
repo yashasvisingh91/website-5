@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "website": {
+      "commandName": "Project",
+      "commandLineArgs": "preview -l Debug"
+    }
+  }
+}
