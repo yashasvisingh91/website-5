@@ -1,0 +1,3 @@
+[submodule "theme"]
+	path = theme
+	url = ../../statiqdev/Samson.git
