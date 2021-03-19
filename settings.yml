@@ -1,1 +1,3 @@
-﻿
+﻿ReleaseDir: release
+CakeSourceDir: cake-repo
+CakeContribSourceDir: cake-contrib-repo
